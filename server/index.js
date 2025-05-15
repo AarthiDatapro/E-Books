@@ -17,7 +17,7 @@ app.get("/", (req, res) => {
 // CORS configuration
 app.use(
     cors({
-        origin: ["http://localhost:3000", "http://localhost:5173", "https://e-books-frontend.onrender.com/userHome"], // Allow both development ports
+        origin: ["http://localhost:3000", "http://localhost:5173", "https://e-books-frontend.onrender.com"], // Allow both development ports
         credentials: true,
         methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
         allowedHeaders: ["Content-Type", "Authorization", "Accept"],
