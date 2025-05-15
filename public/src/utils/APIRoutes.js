@@ -1,4 +1,4 @@
-export const host = "http://localhost:5000";
+export const host = "https://e-books-server.onrender.com";
 // razorpay route
 export const razorpayRoute = "https://checkout.razorpay.com/v1/checkout.js";
 export const razorpayKey = "rzp_test_Xk7M6YuPJpaWZA";
