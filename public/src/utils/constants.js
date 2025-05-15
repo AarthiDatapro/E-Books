@@ -1,0 +1,6 @@
+export const roleCases = {
+    SET_ADMIN: "ADMIN",
+    SET_USER: "USER",
+    SET_AFFILIATOR:"AFFILIATOR",
+    SET_CURRENT_USER: "CURRENT_USER",
+}

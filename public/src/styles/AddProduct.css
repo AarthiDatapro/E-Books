@@ -1,0 +1,162 @@
+:root {
+  --primary-color: #2563eb;
+  --secondary-color: #1e40af;
+  --text-color: #1f2937;
+  --light-text: #6b7280;
+  --background-color: #ffffff;
+  --card-background: #f3f4f6;
+}
+
+.add-product-container {
+  max-width: 800px;
+  margin: 0 auto;
+  margin-top: -30px;
+  padding: 2rem 5%;
+}
+
+.add-product-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.add-product-title {
+  font-size: 2.5rem;
+  color: var(--text-color);
+  margin-bottom: 0.75rem;
+  font-weight: 700;
+}
+
+.add-product-subtitle {
+  font-size: 1.2rem;
+  color: var(--light-text);
+}
+
+.add-product-form {
+  background: var(--background-color);
+  padding: 2rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+.add-label {
+  display: block;
+  margin-bottom: 0.4rem;
+  color: var(--text-color);
+  font-weight: 500;
+  font-size: 1.2rem;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.7rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  font-size: 1.1rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: var(--card-background);
+}
+
+.form-select {
+  width: 100%;
+  padding: 0.7rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: var(--card-background);
+}
+
+.form-input:focus,
+.form-select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.file-input-container {
+  margin-bottom: 1.25rem;
+}
+
+.file-input-label {
+  display: block;
+  width: 100%;
+  padding: 1.5rem;
+  border: 2px dashed #e5e7eb;
+  border-radius: 0.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: var(--card-background);
+}
+
+.file-input-label:hover {
+  border-color: var(--primary-color);
+  background: rgba(37, 99, 235, 0.05);
+}
+
+.file-input {
+  display: none;
+}
+
+.file-input-text {
+  color: var(--light-text);
+  font-size: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.file-input-text i {
+  font-size: 1.75rem;
+  color: var(--primary-color);
+}
+
+.submit-button {
+  width: 100%;
+  padding: 0.8rem;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.submit-button:hover {
+  background: var(--secondary-color);
+  transform: translateY(-1px);
+}
+
+.submit-button:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .add-product-container {
+    padding: 1.5rem;
+  }
+
+  .add-product-title {
+    font-size: 2rem;
+  }
+
+  .add-product-form {
+    padding: 1.5rem;
+  }
+
+  .file-input-label {
+    padding: 1.25rem;
+  }
+}

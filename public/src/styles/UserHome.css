@@ -1,0 +1,144 @@
+.user-home-container {
+  min-height: 100vh;
+  background-color: #f8f9fa;
+  display: flex;
+  flex-direction: column;
+}
+
+.user-nav {
+  background-color: #ffffff;
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.nav-brand h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin: 0;
+}
+
+@media screen and (max-width: 768px) {
+  .nav-brand h1 {
+    font-size: 1rem;
+  }
+  
+}
+
+.nav-links {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.nav-link {
+  background: none;
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+  color: #495057;
+  font-weight: 500;
+}
+
+@media screen and (max-width: 768px) {
+  .nav-link {
+    padding: 0.5rem 0.8rem;
+    font-size: 0.9rem;
+    gap: 0.1rem
+  }
+}
+
+.nav-link:hover {
+  background-color: #f8f9fa;
+  color: #2c3e50;
+}
+
+.nav-link.active {
+  background-color: #e9ecef;
+  color: #2c3e50;
+}
+
+.nav-link .icon {
+  font-size: 1.1rem;
+}
+
+.nav-link .text {
+  font-size: 0.95rem;
+}
+
+.nav-link.logout {
+  color: #dc3545;
+}
+
+.nav-link.logout:hover {
+  background-color: #fff5f5;
+}
+
+.content-area {
+  flex: 1;
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .user-nav {
+    padding: 1rem;
+    flex-direction: row;
+    gap: 1rem;
+  }
+
+  .nav-brand h1 {
+    font-size: 1rem;
+  }
+
+  .nav-links {
+    width:60%;
+    justify-content: center;
+    gap: 0.2rem;
+  }
+
+  .nav-link {
+    padding: 0.2rem 0.3rem;
+  }
+
+  .nav-link .text {
+    font-size: 0.7rem;
+  }
+
+  .content-area {
+    padding: 1rem;
+  }
+
+  .nav-link .icon {
+    font-size: 0.8rem;
+  }
+}
+
+/* Simple fade animation */
+.content-area {
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+} 

@@ -1,0 +1,19 @@
+version: '3'
+services:
+  frontend:
+    build:
+      context: ./public  # This is the directory containing your frontend code (React app)
+      dockerfile: Dockerfile  # Make sure you have a Dockerfile in the ./public directory
+    ports:
+      - "3000:80"  # Expose port 3000 on the host and map it to port 80 in the container
+
+  backend:
+    build:
+      context: ./server  # This is the directory containing your backend code (Node.js app)
+      dockerfile: Dockerfile  # Ensure you have a Dockerfile in the ./server directory
+    ports:
+      - "5000:5000"  # Expose port 5000 for your backend
+    environment:
+      - NODE_ENV=production  # Set environment variable for production mode
+    volumes:
+      - ./server:/app  # Mount the ./server directory on the host to /app in the container

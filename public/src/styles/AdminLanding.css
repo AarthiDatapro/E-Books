@@ -1,0 +1,207 @@
+:root {
+  --primary-color: #2563eb;
+  --secondary-color: #1e40af;
+  --text-color: #1f2937;
+  --light-text: #6b7280;
+  --background-color: #ffffff;
+  --card-background: #f3f4f6;
+  --sidebar-background: #f8fafc;
+  --border-color: #e5e7eb;
+}
+
+.admin-container {
+  display: flex;
+  min-height: 100vh;
+  background: var(--background-color);
+}
+
+.admin-sidebar {
+  width: 280px;
+  background: var(--sidebar-background);
+  padding: 2rem;
+  border-right: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.admin-header {
+  text-align: center;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.admin-title {
+  font-size: 1.5rem;
+  color: var(--text-color);
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.admin-subtitle {
+  font-size: 0.85rem;
+  color: var(--light-text);
+}
+
+.admin-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.8rem 1rem;
+  color: var(--text-color);
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.menu-item i {
+  font-size: 1.1rem;
+  color: var(--light-text);
+  transition: color 0.3s ease;
+}
+
+.menu-item:hover {
+  background: var(--card-background);
+  color: var(--primary-color);
+}
+
+.menu-item:hover i {
+  color: var(--primary-color);
+}
+
+.menu-item.active {
+  background: var(--primary-color);
+  color: white;
+}
+
+.menu-item.active i {
+  color: white;
+}
+
+.admin-content {
+  flex: 1;
+  padding: 2rem;
+  background: var(--background-color);
+  overflow-y: auto;
+}
+
+.welcome-message {
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 3rem 2rem;
+  background: var(--card-background);
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--border-color);
+}
+
+.welcome-title {
+  font-size: 1.75rem;
+  color: var(--text-color);
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.welcome-text {
+  font-size: 0.95rem;
+  color: var(--light-text);
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .admin-container {
+    flex-direction: column;
+  }
+
+  .admin-sidebar {
+    width: 100%;
+    padding: 1.5rem;
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .admin-menu {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: -20px;
+  }
+
+  .menu-item {
+    flex: 1;
+    min-width: 120px;
+    justify-content: start;
+  }
+
+  .admin-content {
+    padding: 1.5rem;
+  }
+
+  .welcome-message {
+    padding: 2rem 1.5rem;
+  }
+
+  .welcome-title {
+    font-size: 1.5rem;
+  }
+}
+
+
+/* Mobile header */
+.admin-mobile-header {
+  display: none;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: var(--sidebar-background);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.hamburger-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--text-color);
+}
+
+.mobile-dashboard-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+/* Responsive sidebar toggle */
+@media (max-width: 768px) {
+  .admin-mobile-header {
+    display: flex;
+  }
+
+  .admin-sidebar {
+    position: fixed;
+    top: 64px; /* height of mobile header */
+    left: 0;
+    width: 100%;
+    max-width: 280px;
+    height: calc(100% - 64px);
+    background: var(--sidebar-background);
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+    z-index: 1000;
+    border-right: 1px solid var(--border-color);
+  }
+
+  .admin-sidebar.show-sidebar {
+    transform: translateX(0);
+  }
+}
+

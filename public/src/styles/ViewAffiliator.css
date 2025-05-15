@@ -1,0 +1,212 @@
+/* ViewAffiliator.css */
+
+.table-container {
+    /* padding: 2rem; */
+    background: linear-gradient(to right, #fdfbfb, #ebedee);
+    font-family: 'Segoe UI', sans-serif;
+    width: 100%;
+}
+
+.handlereset-commisions{
+  background-color: aqua;
+  color: black;
+  border: none;
+  padding: 10px 20px;
+  margin-bottom: 10px;
+}
+
+.handlereset-commisions:hover{
+  background-color: #0072ff;
+  color: white;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.table-title {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    background: linear-gradient(to right, #00c6ff, #0072ff);
+    color: black;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.no-data {
+    text-align: center;
+    color: #666;
+    font-size: 1.2rem;
+}
+
+.affiliator-table *{
+    font-size: 0.8rem;
+}
+
+.table-wrapper {
+    overflow-x: auto;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    background-color: white;
+}
+
+.affiliator-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 800px;
+}
+
+.affiliator-table thead {
+    background: #0072ff;
+    color: black;
+}
+
+.affiliator-table th,
+.affiliator-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.affiliator-table tbody tr:hover {
+    background-color: #f5f7fa;
+    transition: background-color 0.3s ease;
+}
+
+.affiliator-table a {
+    color: #0072ff;
+    text-decoration: underline;
+}
+
+.affiliator-table a:hover {
+    color: #0051cc;
+}
+
+/* Optional Animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+
+.edit-btn,
+.delete-btn {
+    padding: 6px 10px;
+    border: none;
+    border-radius: 6px;
+    margin-right: 8px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+}
+
+.edit-btn {
+    background-color: #007bff;
+    color: white;
+}
+
+.edit-btn:hover {
+    background-color: #ec971f;
+}
+
+.delete-btn {
+    background-color: #d9534f;
+    color: white;
+}
+
+.delete-btn:hover {
+    background-color: #c9302c;
+}
+
+
+.actions-btns{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.table-container {
+  padding: 20px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.table-container h2 {
+  margin-bottom: 15px;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.affiliator-table {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+.affiliator-table th,
+.affiliator-table td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: left;
+}
+
+.affiliator-table th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.edit-btn,
+.delete-btn,
+.cancel-btn {
+  padding: 6px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.edit-btn {
+  background-color: #f0ad4e;
+  color: white;
+}
+
+.delete-btn {
+  background-color: #dc3545;
+  color: white;
+}
+
+.cancel-btn {
+  background-color: #6c757d;
+  color: white;
+}
+
+.edit-modal {
+  margin-top: 30px;
+  padding: 20px;
+  border: 1px solid #eee;
+  background-color: #fdfdfd;
+  border-radius: 8px;
+  max-width: 600px;
+}
+
+.edit-modal h3 {
+  margin-bottom: 15px;
+}
+
+.edit-modal input {
+  display: block;
+  width: 100%;
+  margin-bottom: 12px;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.edit-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
