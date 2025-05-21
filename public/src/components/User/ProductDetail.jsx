@@ -89,7 +89,8 @@ function ProductDetail() {
         setIsDownloading(true);
 
         try {
-            if (!product.restricted) { // retriction added
+            if (!product.restricted) { 
+                console.log(product) // retriction added
                 const pdfUrl = `${host}/uploads/pdfs/${product.category}/${product.subCategory}/${product.bookPdf}`;
                 const existingPdfBytes = await fetch(pdfUrl).then(res => res.arrayBuffer());
 
