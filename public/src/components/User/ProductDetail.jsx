@@ -7,6 +7,7 @@ import AllProducts from './AllProducts';
 import Cart from './Cart';
 import "../../styles/ProductDetail.css";
 import { PDFDocument } from "pdf-lib";
+import { toast, ToastContainer } from 'react-toastify';
 
 function ProductDetail() {
     const [product, setProduct] = useState(null);
@@ -15,6 +16,13 @@ function ProductDetail() {
     const [activeTab, setActiveTab] = useState("");
     const [notification, setNotification] = useState({ show: false, product: null });
     const [isDownloading, setIsDownloading] = useState(false);
+    const toastOptions = {
+        position: "bottom-right",
+        autoClose: 8000,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "dark",
+    };
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -27,7 +35,7 @@ function ProductDetail() {
             setContent(<AllProducts />);
         } else if (page === "cart") {
             setContent(<Cart />);
-        }  else if (page === "logout") {
+        } else if (page === "logout") {
             localStorage.removeItem("bookShopCurrentUser");
             navigate("/");
         }
@@ -77,42 +85,47 @@ function ProductDetail() {
 
     const handleRequestSample = async () => {
         if (!product || isDownloading) return;
-      
+
         setIsDownloading(true);
-      
+
         try {
-          const pdfUrl = `${host}/uploads/pdfs/${product.category}/${product.subCategory}/${product.bookPdf}`;
-          const existingPdfBytes = await fetch(pdfUrl).then(res => res.arrayBuffer());
-      
-          const pdfDoc = await PDFDocument.load(existingPdfBytes);
-          const newPdfDoc = await PDFDocument.create();
-      
-          const totalPages = pdfDoc.getPageCount();
-          const pagesToCopy = Math.min(5, totalPages); // copy 2 pages, or less if total is smaller
-      
-          const copiedPages = await newPdfDoc.copyPages(pdfDoc, [...Array(pagesToCopy).keys()]);
-          copiedPages.forEach((page) => newPdfDoc.addPage(page));
-      
-          const newPdfBytes = await newPdfDoc.save();
-      
-          const blob = new Blob([newPdfBytes], { type: 'application/pdf' });
-          const blobUrl = URL.createObjectURL(blob);
-      
-          const link = document.createElement('a');
-          link.href = blobUrl;
-          link.setAttribute('download', `Sample-${product.bookName}.pdf`);
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-      
-          URL.revokeObjectURL(blobUrl);
+            if (!product.restricted) { // retriction added
+                const pdfUrl = `${host}/uploads/pdfs/${product.category}/${product.subCategory}/${product.bookPdf}`;
+                const existingPdfBytes = await fetch(pdfUrl).then(res => res.arrayBuffer());
+
+                const pdfDoc = await PDFDocument.load(existingPdfBytes);
+                const newPdfDoc = await PDFDocument.create();
+
+                const totalPages = pdfDoc.getPageCount();
+                const pagesToCopy = Math.min(5, totalPages); // copy 2 pages, or less if total is smaller
+
+                const copiedPages = await newPdfDoc.copyPages(pdfDoc, [...Array(pagesToCopy).keys()]);
+                copiedPages.forEach((page) => newPdfDoc.addPage(page));
+
+                const newPdfBytes = await newPdfDoc.save();
+
+                const blob = new Blob([newPdfBytes], { type: 'application/pdf' });
+                const blobUrl = URL.createObjectURL(blob);
+
+                const link = document.createElement('a');
+                link.href = blobUrl;
+                link.setAttribute('download', `Sample-${product.bookName}.pdf`);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+
+                URL.revokeObjectURL(blobUrl);
+            }
+            else{
+                toast.error("Requested file is restricted to view", toastOptions);
+            }
         } catch (err) {
-          console.error('Error requesting sample:', err);
+            console.error('Error requesting sample:', err);
         } finally {
-          setIsDownloading(false);
+            setIsDownloading(false);
         }
-      };
-    
+    };
+
 
 
 
@@ -211,6 +224,7 @@ function ProductDetail() {
                     {cartItems.length}
                 </div>
             </div>
+            <ToastContainer />
         </div>
     );
 }
