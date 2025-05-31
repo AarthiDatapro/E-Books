@@ -1,6 +1,7 @@
 import productModel from "../models/productModel.js";
 import orderModel from "../models/ordersModel.js";
 import userModel from "../models/userModel.js";
+import shortUrlModel from "../models/shortUrlModel.js";
 
 export const productUpload = async (req, res, next) => {
   try {
@@ -12,6 +13,7 @@ export const productUpload = async (req, res, next) => {
       subCategory,
       author,
       price,
+      discPrice,
     } = req.body;
 
     if (!req.files || !req.files.bookImage || !req.files.bookPdf) {
@@ -30,6 +32,7 @@ export const productUpload = async (req, res, next) => {
       subCategory,
       author,
       price,
+      discPrice,
       bookImage: bookImage.filename,
       bookPdf: bookPdf.filename,
     });
@@ -50,17 +53,73 @@ export const productUpload = async (req, res, next) => {
   }
 };
 
+
 export const getMyProducts = async (req, res, next) => {
   try {
+    const now = new Date();
+    const currentMonth = now.getMonth() + 1; // JS months are 0-based
+    const currentYear = now.getFullYear();
+
+    // Step 1: Aggregate total order count per product
+    const totalCounts = await orderModel.aggregate([
+      {
+        $group: {
+          _id: "$product._id",
+          count: { $sum: 1 }
+        }
+      }
+    ]);
+
+    // Step 2: Aggregate current month order count per product
+    const monthlyCounts = await orderModel.aggregate([
+      {
+        $match: {
+          createdAt: {
+            $gte: new Date(currentYear, currentMonth - 1, 1),
+            $lt: new Date(currentYear, currentMonth, 1)
+          }
+        }
+      },
+      {
+        $group: {
+          _id: "$product._id",
+          count: { $sum: 1 }
+        }
+      }
+    ]);
+
+    // Step 3: Create maps
+    const totalMap = {};
+    totalCounts.forEach(item => {
+      totalMap[item._id?.toString()] = item.count;
+    });
+
+    const monthMap = {};
+    monthlyCounts.forEach(item => {
+      monthMap[item._id?.toString()] = item.count;
+    });
+
+    // Step 4: Fetch all products
     const products = await productModel.find({});
+
+    // Step 5: Add total and monthly order count
+    const productsWithCounts = products.map(product => {
+      const id = product._id.toString();
+      return {
+        ...product.toObject(),
+        orderCount: totalMap[id] || 0,
+        monthlyOrderCount: monthMap[id] || 0
+      };
+    });
 
     return res.json({
       status: true,
-      msg: "Products retrieved successfully!",
-      products: products,
+      msg: "Products with order counts retrieved successfully!",
+      products: productsWithCounts
     });
+
   } catch (err) {
-    console.error("Error retrieving products:", err);
+    console.error("Error retrieving product order counts:", err);
     return res.status(500).json({
       status: false,
       msg: "Failed to retrieve products!",
@@ -68,6 +127,8 @@ export const getMyProducts = async (req, res, next) => {
     });
   }
 };
+
+
 
 export const editProduct = async (req, res, next) => {
   try {
@@ -78,6 +139,7 @@ export const editProduct = async (req, res, next) => {
       subCategory,
       author,
       price,
+      discPrice,
       productId,
     } = req.body;
 
@@ -94,6 +156,7 @@ export const editProduct = async (req, res, next) => {
     product.subCategory = subCategory;
     product.author = author;
     product.price = price;
+    product.discPrice = discPrice;
 
     if (req.files) {
       if (req.files.bookImage) {
@@ -267,16 +330,21 @@ export const getAffiliators = async (req, res) => {
 
 export const deleteAffiliator = async (req, res) => {
   try {
-    const { id } = req.params;
-    const deletedAffiliator = await userModel.findByIdAndDelete(id);
-    if (!deletedAffiliator) {
+    const { email } = req.params;
+    const deletedAffiliator = await userModel.findOneAndDelete({ email });
+    const shortUrlAffiliator = await shortUrlModel.findOneAndDelete({ email: email });
+
+    if (!deletedAffiliator || !shortUrlAffiliator) {
       return res.status(404).json({ status: false, msg: "Affiliator not found" });
     }
+
     res.status(200).json({ status: true, msg: "Affiliator deleted successfully" });
   } catch (err) {
+    console.error("Delete error:", err);
     res.status(500).json({ status: false, msg: "Server error" });
   }
-}
+};
+
 
 
 export const updateAffiliator = async (req, res) => {
@@ -332,5 +400,51 @@ export const resetCommissions = async (req, res) => {
       msg: "Error resetting commissions",
       error: err.message
     });
+  }
+}
+
+
+
+
+export const resetRestriction = async (req, res) => {
+  try {
+    // Extract productId from the body
+    const { productId } = req.body;
+
+    // Validate productId before querying
+    if (!productId) return res.status(400).json({ status: false, msg: "Product ID is required" });
+
+    const product = await productModel.findById(productId);
+    if (!product) return res.status(404).json({ status: false, msg: "Product not found" });
+
+    product.restricted = !product.restricted;
+    await product.save();
+
+    return res.json({ status: true, msg: "Restriction toggled", product });
+  } catch (err) {
+    console.error("Error toggling restriction:", err);
+    return res.status(500).json({ status: false, msg: "Server error", error: err.message });
+  }
+};
+
+
+
+
+export const findReferral = async (req, res) => {
+  try {
+    const { shortId } = req.body;
+    if (!shortId) {
+      return res.status(400).json({ status: false, msg: "Short ID is required" });
+    }
+    const shortUrl = await shortUrlModel.findOne({ shortKey: shortId });
+    if (!shortUrl) {
+      return res.status(404).json({ status: false, msg: "Referral not found" });
+    }
+    console.log("found");
+    return res.json({ status: true, msg: "Referral found", referral: shortUrl });
+  }
+  catch (err) {
+    console.error("Error finding referral:", err);
+    return res.status(500).json({ status: false, msg: "Server error", error: err.message });
   }
 }

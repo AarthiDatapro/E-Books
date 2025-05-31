@@ -7,8 +7,10 @@ const productSchema = new mongoose.Schema({
   subCategory: { type: String },
   author: { type: String },
   price: { type: Number },
+  discPrice: { type: Number },
   bookImage: { type: String },
-  bookPdf: {type: String},
+  bookPdf: { type: String },
+  restricted: { type: Boolean, default: false },
 }, { timestamps: true });
 
 const productModel = mongoose.model("products", productSchema);

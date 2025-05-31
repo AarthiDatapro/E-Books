@@ -11,6 +11,12 @@ export const razorpayKey = process.env.RAZORPAY_KEY;
 export const razorpaySecretKey = process.env.RAZORPAY_SECRET_KEY;
 export const linkingUrl = process.env.LINKING_URL;
 
+
+
+//security keys
+export const SecretKey = process.env.AUTH_SECRET_KEY;
+export const RefreshToken = process.env.REFRESH_TOKEN;
+
 // Email configuration
 export const gmailUser = process.env.GMAIL_USER;
 export const gmailPass = process.env.GMAIL_PASS;

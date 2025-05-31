@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 import crypto from "crypto";
 import { createRequire } from 'module';
 import messageModel from "../models/messageModel.js";
-import { gmailUser, linkingUrl, razorpayKey, razorpaySecretKey, transporter } from "../configs/config.js";
+import { gmailPass, gmailUser, linkingUrl, razorpayKey, razorpaySecretKey, transporter } from "../configs/config.js";
 const require = createRequire(import.meta.url);
 const Razorpay = require("razorpay");
 
@@ -28,6 +28,7 @@ const storeUrl = async (originalUrl, email) => {
 
 
 
+
 // --------------------- User Signup ----------------------
 const userSignup = async (req, res, next) => {
     try {
@@ -47,9 +48,9 @@ const userSignup = async (req, res, next) => {
         const emailCheck = await userModel.findOne({ email: userData.email });
         if (emailCheck) return res.json({ status: false, msg: "Email already exists" });
 
-        const originalUrl = linkingUrl; // Update for production
+        const originalUrl = `${linkingUrl}`; // Update for production
         const shortKey = await storeUrl(originalUrl, userData.email);
-        const shortUrl = `http://${req.headers.host}/r/${shortKey}`;
+        const shortUrl = `${linkingUrl}/r/${shortKey}`;
 
         const hashedPassword = await bcrypt.hash(userData.password, 10);
 
@@ -59,8 +60,6 @@ const userSignup = async (req, res, next) => {
             shortUrl
         });
 
-
-
         const mailOptions = {
             from: gmailUser,
             to: userData.email,
@@ -68,9 +67,10 @@ const userSignup = async (req, res, next) => {
             subject: "Confirmation - Affiliator Registration",
             text: `hello ${userData.username},\n\nThank you for registering as an Affiliator! Here is your marketing details:\n\n allocated referal link: ${shortUrl}\n Referal Key: ${shortKey} \n Password: ${userData.password}\n We request you not to share your credentials and enjoy your carefull marketing!\n\nBest regards,\nE- Books Team`,
         };
-
+        
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
+                console.log(error);
                 return res.json({ status: false, msg: "Error in sending mail" });
             }
             return res.json({
@@ -88,23 +88,8 @@ const userSignup = async (req, res, next) => {
     }
 };
 
-// --------------------- Redirect URL Handler ----------------------
-export const directingUrl = async (req, res) => {
-    try {
-        const { key } = req.params;
-        const record = await shortUrlModel.findOne({ shortKey: key });
 
-        if (record) {
-            const redirectUrlWithRef = `${record.originalUrl}?ref=${key}`;
-            return res.redirect(redirectUrlWithRef);
-        } else {
-            return res.status(404).send("Short link not found");
-        }
-    } catch (err) {
-        console.error("Redirect error:", err);
-        res.status(500).send("Server error");
-    }
-};
+
 
 // --------------------- User Login ----------------------
 const userLogin = async (req, res, next) => {

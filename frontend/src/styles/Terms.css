@@ -1,0 +1,132 @@
+.terms-container {
+  max-width: 500px;
+  margin: 40px auto;
+  padding: 30px;
+  background: linear-gradient(to bottom right, #0f303a, #5085bb);
+  border: none;
+  border-radius: 20px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  *{
+    color: white;
+  }
+  margin-top: 10px;
+  line-height: 1.6;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  font-size: 0.95rem;
+}
+
+.terms-container h1 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #ffffff;
+  font-size: 2rem;
+  font-weight: 700;
+  position: relative;
+  padding-bottom: 12px;
+}
+
+.terms-container h1::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 3px;
+  background: linear-gradient(to right, #d1ecff, #b7ffd5);
+  border-radius: 2px;
+}
+
+.terms-container h2 {
+  margin-top: 25px;
+  color: #ffffff;
+  font-size: 1.3rem;
+  font-weight: 600;
+  padding-left: 12px;
+  border-left: 3px solid #3498db;
+}
+
+.terms-container p,
+.terms-container ul {
+  margin-bottom: 15px;
+  font-size: 0.95rem;
+}
+
+.terms-container ul {
+  padding-left: 20px;
+  list-style-type: none;
+}
+
+.terms-container ul li {
+  position: relative;
+  padding-left: 20px;
+  margin-bottom: 10px;
+  font-size: 0.95rem;
+}
+
+.terms-container ul li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: #f6fbff;
+  font-size: 1.2rem;
+}
+
+.effective-date {
+  font-style: italic;
+  color: #eef3f3;
+  text-align: center;
+  margin-bottom: 25px;
+  padding: 8px;
+  background: rgba(248, 252, 255, 0.856);
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .terms-container {
+    margin: 15px;
+    padding: 15px;
+    font-size: 0.9rem;
+  }
+  
+  .terms-container h1 {
+    font-size: 1.6rem;
+    margin-bottom: 20px;
+  }
+  
+  .terms-container h2 {
+    font-size: 1.1rem;
+    margin-top: 20px;
+  }
+  
+  .terms-container p,
+  .terms-container ul li {
+    font-size: 0.9rem;
+  }
+  
+  .effective-date {
+    font-size: 0.85rem;
+    padding: 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  .terms-container {
+    margin: 10px;
+    padding: 12px;
+  }
+  
+  .terms-container h1 {
+    font-size: 1.4rem;
+  }
+  
+  .terms-container h2 {
+    font-size: 1rem;
+  }
+  
+  .terms-container p,
+  .terms-container ul li {
+    font-size: 0.85rem;
+  }
+}

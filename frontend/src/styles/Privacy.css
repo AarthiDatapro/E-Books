@@ -1,0 +1,140 @@
+.privacy-container {
+  max-width: 500px;
+  margin: 40px auto;
+  padding: 30px;
+  background: linear-gradient(to bottom right, #0f303a, #5085bb);
+  border: none;
+  border-radius: 20px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: white;
+  line-height: 1.6;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  font-size: 0.95rem;
+  margin-top: 10px;
+}
+
+.privacy-container h1 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: white;
+  font-size: 2rem;
+  font-weight: 700;
+  position: relative;
+  padding-bottom: 12px;
+}
+
+.privacy-container h1::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 3px;
+  background: linear-gradient(to right, #e74c3c, #3498db);
+  border-radius: 2px;
+}
+
+.privacy-container h2 {
+  margin-top: 25px;
+  color: white;
+  font-size: 1.3rem;
+  font-weight: 600;
+  padding-left: 12px;
+  border-left: 3px solid #e74c3c;
+}
+
+.privacy-container h2 em {
+  font-style: normal;
+  color: #ff6b5b;
+}
+
+.privacy-container p,
+.privacy-container ul {
+  margin-bottom: 15px;
+  font-size: 0.95rem;
+}
+
+.privacy-container ul {
+  padding-left: 20px;
+  list-style-type: none;
+}
+
+.privacy-container ul li {
+  position: relative;
+  padding-left: 20px;
+  margin-bottom: 10px;
+  font-size: 0.95rem;
+  transition: transform 0.2s ease;
+}
+
+.privacy-container ul li:hover {
+  transform: translateX(5px);
+}
+
+.privacy-container ul li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: #e74c3c;
+  font-size: 1rem;
+}
+
+.effective-date {
+  font-style: italic;
+  color: white;
+  text-align: center;
+  margin-bottom: 25px;
+  padding: 8px;
+  background: rgba(231, 77, 60, 0.849);
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .privacy-container {
+    margin: 15px;
+    padding: 15px;
+    font-size: 0.9rem;
+  }
+  
+  .privacy-container h1 {
+    font-size: 1.6rem;
+    margin-bottom: 20px;
+  }
+  
+  .privacy-container h2 {
+    font-size: 1.1rem;
+    margin-top: 20px;
+  }
+  
+  .privacy-container p,
+  .privacy-container ul li {
+    font-size: 0.9rem;
+  }
+  
+  .effective-date {
+    font-size: 0.85rem;
+    padding: 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  .privacy-container {
+    margin: 10px;
+    padding: 12px;
+  }
+  
+  .privacy-container h1 {
+    font-size: 1.4rem;
+  }
+  
+  .privacy-container h2 {
+    font-size: 1rem;
+  }
+  
+  .privacy-container p,
+  .privacy-container ul li {
+    font-size: 0.85rem;
+  }
+}

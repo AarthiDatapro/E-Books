@@ -1,0 +1,136 @@
+.policy-container {
+  max-width: 500px;
+  margin: 40px auto;
+  padding: 30px;
+  background: linear-gradient(to bottom right, #0f303a, #5085bb);
+  border: none;
+  border-radius: 20px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: white;
+  line-height: 1.6;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  font-size: 0.95rem;
+  margin-top: 10px;
+}
+
+.policy-container h1 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: white;
+  font-size: 2rem;
+  font-weight: 700;
+  position: relative;
+  padding-bottom: 12px;
+}
+
+.policy-container h1::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 3px;
+  background: linear-gradient(to right, #e67e22, #d35400);
+  border-radius: 2px;
+}
+
+.policy-container p {
+  margin-bottom: 15px;
+  font-size: 0.95rem;
+  position: relative;
+  padding-left: 20px;
+}
+
+.policy-container p::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: #e67e22;
+  font-size: 1.2rem;
+}
+
+.policy-container ul {
+  padding-left: 20px;
+  list-style-type: none;
+  margin: 20px 0;
+}
+
+.policy-container ul li {
+  position: relative;
+  padding-left: 30px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  font-size: 0.95rem;
+}
+
+.policy-container ul li strong {
+  margin-right: 8px;
+  color: #e67e22;
+  font-size: 0.95rem;
+}
+
+.policy-container em {
+  font-style: normal;
+  color: #e74c3c;
+  font-weight: 600;
+  padding: 2px 4px;
+  background: rgba(231, 76, 60, 0.1);
+  border-radius: 4px;
+  font-size: 0.95rem;
+}
+
+.effective-date {
+  font-style: italic;
+  color: #7f8c8d;
+  text-align: center;
+  margin-bottom: 25px;
+  padding: 8px;
+  background: rgba(230, 126, 34, 0.1);
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .policy-container {
+    margin: 15px;
+    padding: 15px;
+    font-size: 0.9rem;
+  }
+  
+  .policy-container h1 {
+    font-size: 1.6rem;
+    margin-bottom: 20px;
+  }
+  
+  .policy-container p,
+  .policy-container ul li,
+  .policy-container ul li strong,
+  .policy-container em {
+    font-size: 0.9rem;
+  }
+  
+  .effective-date {
+    font-size: 0.85rem;
+    padding: 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  .policy-container {
+    margin: 10px;
+    padding: 12px;
+  }
+  
+  .policy-container h1 {
+    font-size: 1.4rem;
+  }
+  
+  .policy-container p,
+  .policy-container ul li,
+  .policy-container ul li strong,
+  .policy-container em {
+    font-size: 0.85rem;
+  }
+}
