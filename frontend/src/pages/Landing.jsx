@@ -62,7 +62,7 @@ function Landing() {
             const { email, password, role } = values;
             console.log(values)
             if (role === roleCases.SET_ADMIN) {
-                if (email === "mahi@mahicommunity.com" && password === "Mahicommunity@com") {
+                if (email === process.env.REACT_APP_ADMIN_NAME && password === process.env.REACT_APP_ADMIN_ID) {
                     localStorage.setItem("bookShopCurrentUser", JSON.stringify({
                         email: email,
                         role: role

@@ -3,6 +3,7 @@ import { gmailUser, transporter } from "../configs/config.js";
 import messageModel from "../models/messageModel.js";
 import orderModel from "../models/ordersModel.js";
 import productModel from "../models/productModel.js";
+import util from "util";
 
 
 export const getAllProducts = async (req, res) => {
@@ -25,25 +26,27 @@ export const getAllProducts = async (req, res) => {
 export const buyNow = async (req, res) => {
   try {
     const { product, razorpay_payment_id, razorpay_order_id, razorpay_signature, description, referal, email } = req.body;
-  
+
     const order = await orderModel.create({
-      product: product,
+      product,
       paymentId: razorpay_payment_id,
       orderId: razorpay_order_id,
       signature: razorpay_signature,
       orderType: description,
-      referal: referal
-    })
+      referal,
+      userEmail: email
+    });
 
     const message = await messageModel.create({
       text: "Order Placed",
       orderId: razorpay_order_id,
       bookName: product.bookName,
       price: product.total_price,
-      referal: referal
-    })
+      referal,
+      userEmail: email,
+    });
 
-    if (item && order && message) {
+    if (order && message) {
       const mailOptions = {
         from: gmailUser,
         to: email,
@@ -65,16 +68,16 @@ export const buyNow = async (req, res) => {
         ]
       };
 
-      transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-          return res.json({ status: false, msg: "Error in sending mail" });
-        }
-        return res.json({
-          status: true,
-          msg: "Product purchased successfully",
-        });
+      // Convert sendMail to a promise-based function
+      const sendMailPromise = util.promisify(transporter.sendMail).bind(transporter);
+      await sendMailPromise(mailOptions);
+
+      return res.json({
+        status: true,
+        msg: "Product purchased successfully and email sent.",
       });
     }
+
     return res.json({
       status: false,
       msg: "Product not found",
@@ -83,7 +86,7 @@ export const buyNow = async (req, res) => {
     console.log(error);
     return res.json({
       status: false,
-      msg: "Error purchasing product",
+      msg: "Error purchasing product or sending email",
     });
   }
 };
@@ -92,6 +95,8 @@ export const buyAll = async (req, res) => {
   try {
     const { cart, razorpay_payment_id, razorpay_order_id, razorpay_signature, description, referal, email } = req.body;
 
+    const sendMailPromise = util.promisify(transporter.sendMail).bind(transporter);
+
     for (let i = 0; i < cart.length; i++) {
       await orderModel.create({
         product: cart[i],
@@ -99,7 +104,8 @@ export const buyAll = async (req, res) => {
         orderId: razorpay_order_id,
         signature: razorpay_signature,
         orderType: description,
-        referal: referal
+        referal,
+        userEmail: email,
       });
 
       await messageModel.create({
@@ -107,8 +113,9 @@ export const buyAll = async (req, res) => {
         orderId: razorpay_order_id,
         bookName: cart[i].bookName,
         price: cart[i].total_price,
-        referal: referal
-      })
+        referal,
+        userEmail: email,
+      });
 
       const mailOptions = {
         from: gmailUser,
@@ -131,26 +138,18 @@ export const buyAll = async (req, res) => {
         ]
       };
 
-      transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-          return res.json({ status: false, msg: "Error in sending mail" });
-        }
-        return res.json({
-          status: true,
-          msg: "Product purchased successfully",
-        });
-      });
+      await sendMailPromise(mailOptions);
     }
 
     return res.json({
       status: true,
-      msg: "Products purchased successfully",
+      msg: "Products purchased successfully and emails sent.",
     });
   } catch (error) {
     console.log(error);
     return res.json({
       status: false,
-      msg: "Error purchasing products",
+      msg: "Error purchasing products or sending emails",
     });
   }
 };

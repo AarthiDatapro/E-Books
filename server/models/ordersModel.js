@@ -26,6 +26,10 @@ const orderSchema = new mongoose.Schema({
     type: String,
     default: "hero",
   },
+  userEmail: {
+    type: String,
+    required: true
+  },
   paidAt: {
     type: Date,
     default: Date.now,

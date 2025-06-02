@@ -50,6 +50,7 @@ function AffiliatorMessages() {
               </div>
               <div className="message-body">
                 <span className="book-name"><strong>Book:</strong> {msg.bookName}</span>
+                <span className="book-name"><strong>Email:</strong> {msg.userEmail}</span>
                 <span className="price"><strong>Price:</strong> ₹{msg.price}</span>
               </div>
               <div className="message-text">

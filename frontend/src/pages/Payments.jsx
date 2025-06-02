@@ -6,6 +6,7 @@ import {
   paymentRoute,
   razorpayKey,
   razorpayRoute,
+  secretKey,
 } from "../utils/APIRoutes";
 
 const Payments = () => {
@@ -13,12 +14,12 @@ const Payments = () => {
   const navigate = useNavigate();
   const [cart, setCart] = useState([]);
   const [referal, setReferal] = useState("hero");
+  const [loading, setLoading] = useState(false);
   const [userInfo, setUserInfo] = useState({
     name: "",
     email: "",
     contact: "",
   });
-
 
   const razorpayLoaded = useRef(false);
 
@@ -49,7 +50,7 @@ const Payments = () => {
     try {
       const res = await fetch(paymentRoute, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", "api-key": secretKey },
         body: JSON.stringify({ amount }),
       });
 
@@ -63,27 +64,29 @@ const Payments = () => {
           key: razorpayKey,
           amount: orderAmount,
           currency: "INR",
-          name: "My Book Store",
+          name: "Mahi Community",
           description: state.setAll ? "Full Cart Checkout" : "Buy Single Item",
           order_id,
           handler: async (response) => {
+            setLoading(true);
             const commonPayload = {
               razorpay_payment_id: response.razorpay_payment_id,
               razorpay_order_id: response.razorpay_order_id,
               razorpay_signature: response.razorpay_signature,
               amount: orderAmount / 100,
               description: state.setAll ? "Full Cart Checkout" : "Buy Single Item",
-              referal: referal,
+              referal,
             };
 
             try {
               if (state.setAll) {
                 const res = await fetch(buyAllRoute, {
                   method: "POST",
-                  headers: { "Content-Type": "application/json" },
+                  headers: { "Content-Type": "application/json", "api-key": secretKey },
                   body: JSON.stringify({ ...commonPayload, cart, email: userInfo.email }),
                 });
                 const result = await res.json();
+                setLoading(false);
                 if (result.status === true) {
                   localStorage.removeItem("bookCartItems");
                   navigate("/userHome", { state: { response } });
@@ -93,10 +96,11 @@ const Payments = () => {
                 const product = cart.find((item) => item._id === state.productId);
                 const res = await fetch(buyNowRoute, {
                   method: "POST",
-                  headers: { "Content-Type": "application/json" },
+                  headers: { "Content-Type": "application/json", "api-key": secretKey },
                   body: JSON.stringify({ ...commonPayload, product, email: userInfo.email }),
                 });
                 const result = await res.json();
+                setLoading(false);
                 if (result.status === true) {
                   const updatedCart = cart.filter((item) => item._id !== state.productId);
                   localStorage.setItem("bookCartItems", JSON.stringify(updatedCart));
@@ -107,6 +111,7 @@ const Payments = () => {
               }
             } catch (err) {
               console.error("Backend error:", err);
+              setLoading(false);
               alert("Something went wrong while saving your order.");
             }
           },
@@ -125,23 +130,26 @@ const Payments = () => {
         };
 
         const razorpay = new window.Razorpay(options);
+
+        // 🔴 Payment Failure Handling
+        razorpay.on("payment.failed", (response) => {
+          console.error("Payment failed:", response.error);
+          alert(
+            `Payment failed: ${response.error.description || "Unknown error"}. Please try again.`
+          );
+          setLoading(false);
+          navigate("/userHome", { replace: true });
+        });
+
         razorpay.open();
       };
+
       document.body.appendChild(script);
     } catch (err) {
       console.error("Payment initialization failed:", err);
       alert("Failed to start payment.");
     }
   };
-
-
-
-  // const handleTesting = () => {
-  //   const product = cart.find((item) => item._id === state.productId);
-  //   axios.post(testRoute, {
-  //     product, email: userInfo.email
-  //   })
-  // }
 
   return (
     <div style={{
@@ -216,22 +224,49 @@ const Payments = () => {
         />
         <button
           type="submit"
+          disabled={loading}
           style={{
-            backgroundColor: '#3399cc',
+            backgroundColor: loading ? '#ccc' : '#3399cc',
             color: 'white',
             padding: '14px 20px',
             border: 'none',
             borderRadius: '8px',
             fontSize: '1.1rem',
             fontWeight: '600',
-            cursor: 'pointer',
+            cursor: loading ? 'not-allowed' : 'pointer',
             transition: 'background-color 0.3s ease',
             marginTop: '1rem'
           }}
         >
-          Proceed to Pay {state.price}
+          {loading ? "Processing..." : `Proceed to Pay ₹${state.price}`}
         </button>
       </form>
+
+      {loading && (
+        <div style={{ textAlign: 'center', marginTop: '2rem' }}>
+          <div style={{
+            width: "40px",
+            height: "40px",
+            border: "4px solid #ccc",
+            borderTop: "4px solid #3399cc",
+            borderRadius: "50%",
+            animation: "spin 1s linear infinite",
+            margin: "auto"
+          }} />
+          <p style={{ marginTop: "1rem", color: "#666" }}>
+            Finalizing your order... Please wait while we send your confirmation email.
+          </p>
+        </div>
+      )}
+
+      <style>
+        {`
+          @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+        `}
+      </style>
     </div>
   );
 };

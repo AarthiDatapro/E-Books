@@ -5,7 +5,7 @@ const messageSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  orderId:{
+  orderId: {
     type: String,
     required: true,
   },
@@ -13,14 +13,18 @@ const messageSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  price:{
+  price: {
     type: Number,
     required: true,
   },
-  referal:{
+  referal: {
     type: String,
     required: true,
-  }
+  },
+  userEmail: {
+    type: String,
+    required: true
+  },
 }, { timestamps: true });
 
 const messageModel = mongoose.model("messages", messageSchema);
